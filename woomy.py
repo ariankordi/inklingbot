@@ -1,9 +1,9 @@
+#!/usr/bin/python3
 import discord
 import asyncio
 import OpenSSL
 import base64
 import binascii
-from random import choice
 import hashlib
 import struct
 import time
@@ -23,17 +23,49 @@ main = Bot(command_prefix="woomy ")
 if normie:
 	@main.async_event
 	async def on_ready():
-		await main.change_presence(game=discord.Game(name="'woomy how2use' for help"))
+		return await main.change_presence(game=discord.Game(name="'woomy how2use' for help"))
 	@main.command()
 	async def how2use(*args):
 		return await main.say("""
 okay the command prefix is `woomy` so type that before everything and it'll work
-`woomy help` will list all commands however none of them are commented so you'll have to try them if you want to see if they work
+`woomy help` will list all commands however none of them are commented so you'll have to try them if you want to know what they do
 if a command requires args then it'll tell you
 that's about it""")
 
-async def name_from_at(a):
-	print("todo get name from user id at")
+# gets a username from either if someone says it plainly or @s someone
+@main.async_event
+async def user_from_at(ctx, a, all=True, plain=True):
+	app = await main.application_info()
+	if a.startswith("<@"):
+		try:
+			if a.startswith("<@!"):
+				user = ctx.message.server.get_member(a[3:-1])
+			else:
+				user = ctx.message.server.get_member(a[2:-1])
+			if user.id == app.id:
+				await main.send_message(ctx.message.channel, "um")
+				return 69
+			if all:
+				return user
+			else:
+				return user.name
+		except Exception as e:
+			return False
+	elif "@everyone" in a or "@here" in a:
+		await main.send_message(ctx.message.channel, "fuck off")
+		return 69
+	else:
+		if plain:
+			return a
+		else:
+			return False
+@main.async_event
+async def erickek():
+	hr = int(time.strftime('%H'))
+	if not fuckeric and not (hr in range(1,5) or hr in range(22,24)):
+		return await main.say("it's good, eric is cool with us now\n_at the moment_")
+	else:
+		return None
 
 #first command made
 @main.command()
@@ -48,18 +80,26 @@ async def ass(*args):
 @main.command()
 async def hi(*args):
 	return await main.say("heyyy")
+# at the end of nut, after SystemExit
+async def ping(*args):
+	now = time.time()
+	msg = await main.say("pingas")
+	return await main.edit_message(msg, "`" + (time.time - now) + "` seconds")
 @main.command()
 async def rijndael(*args):
 	return await main.say(binascii.hexlify(OpenSSL.rand.bytes(150)).decode())
 @main.command()
 async def speak(*args):
-	return await main.say("".join([choice("abcdefghijklmnopqrstuvwxyz") for i in range(12)]))
-@main.command()
-async def python(*args):
-	return await main.say("KeyboardInterrupt")
-@main.command()
-async def mysql(*args):
-	return await main.say("greedy fuck")
+	return await main.say("".join([random.choice("abcdefghijklmnopqrstuvwxyz") for i in range(12)]))
+# at the end of nut, replaces mysql and python, rest in peace
+@main.command(pass_context=True)
+async def SystemExit(ctx, *args):
+	app = await main.application_info()
+	if ctx.message.author.id != app.owner.id:
+		return await main.say("how about YOU go die() yourself, php faggot <@"+ctx.message.author.id+">")
+	else:
+		return await main.say("bye :wave: ")
+		sys.exit(1)
 @main.command()
 async def ok(*args):
 	return await main.say("don't you fucking ok me cunt")
@@ -69,7 +109,7 @@ async def pikamasterjesi(*args):
 @main.command()
 async def nnpasswordhash(*a):
 	if not a:
-		return await main.say("```\nnnpasswordhash [pid] [passwd]```")
+		return await main.say("but only for the _realest of real_ haxx0rz ```\nnnpasswordhash [pid] [passwd]```")
 	else:
 		if not a[1]:
 			return await main.say("you forgot the password idiot are you sure you know what this is even for")
@@ -92,7 +132,7 @@ async def openverse(ctx, *all):
 		if len(str) > 50:
 			return await main.say("2 long asshole")
 		try:
-			out = subprocess.getoutput("php open-logo-pyc.php \"" + str + "\"")
+			out = subprocess.Popen(["php", "open-logo-pyc.php", str], stdout=subprocess.PIPE).stdout.read()
 		except Exception as e:
 			return await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```")
 		return await main.send_file(ctx.message.channel, "open-py.png")
@@ -121,35 +161,39 @@ async def length(*lol):
 	if lol[0] == 'arian':
 		return await main.say("actually arian is `5'11 ft` tall as of now")
 	else:
-		if lol[0] == 'eric\'s':
+		if 'eric' in lol[0]:
 			thing = 0
 		else:
 			thing = int(random.getrandbits(5))
 		return await main.say(str(thing) + " cm")
-if fuckeric:
-	@main.command(pass_context=True)
-	async def fuckofferic(ctx):
-		faggot = 151466174683545600
-		await main.say("goodbye eric d faggot :wave: <@"+str(faggot)+">")
-		try:
-			await main.kick(ctx.message.server.get_member(str(faggot)))
-		except Exception as e:
-			await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```did Eric leave? do I not have permissions? IDK you decide")
-		return 0;
-@main.command()
-async def sethfuck(*a):
+@main.command(pass_context=True)
+async def fuckofferic(ctx, *args):
+	erickek()
+	faggot = 151466174683545600
+	await main.say("goodbye eric d faggot :wave: <@"+str(faggot)+">")
+	try:
+		await main.kick(ctx.message.server.get_member(str(faggot)))
+	except Exception as e:
+		await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```did Eric leave? do I not have permissions? IDK you decide")
+	return 0
+@main.command(pass_context=True)
+async def sethfuck(ctx, *a):
 	if not a:
 		with open("seth.json") as cumd:
 			cummies = random.choice(json.load(cumd))
 	else:
-		cummies = " ".join(a)
-	return await main.say("```\nseth 10 year old sperm ---) " + cummies + "\n```")
-if fuckeric:
-	@main.command()
-	async def eric(*args):
-		with open("eric.json") as mistaked:
-			mistakes = json.load(mistaked)
-		return await main.say(random.choice(mistakes))
+		person = await user_from_at(ctx, " ".join(a), False)
+		if not person:
+			return await main.say("fuck")
+		elif person == 69:
+			return 0
+	return await main.say("```\nseth 10 year old sperm ---) " + u + "\n```")
+@main.command()
+async def eric(*args):
+	erickek()
+	with open("eric.json") as mistaked:
+		mistakes = json.load(mistaked)
+	return await main.say(random.choice(mistakes))
 @main.command()
 async def japanese(*a):
 	katakana = ["ア","イ","ウ","エ","オ","カ","キ","ク","ケ","コ","ガ","ギ","グ","ゲ","ゴ","サ","シ","ス","セ","ソ","ザ","ジ","ズ","ゼ","ゾ","タ","チ","ツ","テ","ト","ダ","ヂ","ヅ","デ","ド","ナ","ニ","ヌ","ネ","ノ","ハ","ヒ","フ","ヘ","ホ","バ","ビ","ブ","ベ","ボ","パ","ピ","プ","ペ","ポ","マ","ミ","ム","メ","モ","ヤ","ユ","ヨ","ラ","リ","ル","レ","ロ","ワ","ヲ","ン"]
@@ -162,7 +206,7 @@ async def japanese(*a):
 			else:
 				japanese += katakana[int(num)]
 	else:
-		japanese = "".join([choice("".join(katakana)) for i in range(6)])
+		japanese = "".join([random.choice("".join(katakana)) for i in range(6)])
 	return await main.say(japanese)
 @main.command()
 async def arian(*args):
@@ -177,19 +221,13 @@ async def sex(ctx, *u):
 		only2genders = "♂"
 	if not u:
 		return await main.say("you are " + only2genders)
-	if u[0].startswith("<@"):
-		try:
-			if u[0].startswith("<@!"):
-				user = ctx.message.server.get_member(u[0][3:-1])
-			else:
-				user = ctx.message.server.get_member(u[0][2:-1])
-			if user == app.name:
-				only2genders = "an inkling"
-			return await main.say(user.name + " is " + only2genders)
-		except Exception as e:
-			return await main.say("they don't exist for some reason")
+	person = await user_from_at(ctx, u[0])
+	if not person:
+		return await main.say("who")
+	elif person == 69:
+			return 0
 	else:
-		return await main.say(u[0] + " is " + only2genders)
+		return await main.say(person.name + " is " + only2genders)
 @main.command(pass_context=True)
 async def php(ctx, *txt):
 	#return await main.say("it sucks")
@@ -199,7 +237,7 @@ async def php(ctx, *txt):
 	if len(tex) > 50:
 		return await main.say("2 long asshole")
 	try:
-		out = subprocess.getoutput("php php-logo-pyc.php \"" + tex + "\"")
+		out = subprocess.Popen(["php", "php-logo-pyc.php", tex], stdout=subprocess.PIPE).stdout.read()
 	except Exception as e:
 		return await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```")
 	return await main.send_file(ctx.message.channel, "php-py.png")
@@ -213,7 +251,7 @@ async def mii(ctx, *n):
 		return await main.say("what how do you have an nnid that's more than 16 characters")
 	msg = await main.send_message(ctx.message.channel, "doing it")
 	try:
-		out = subprocess.getoutput("php nnmii.php \"" + n[0] + "\"")
+		out = subprocess.Popen(["php", "nnmii.php", n[0]], stdout=subprocess.PIPE).stdout.read()
 	except Exception as e:
 		return await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```")
 	if out == 'n':
@@ -224,27 +262,25 @@ async def birthday(ctx, *nam):
 	if not nam:
 		return await main.say("```\nbirthday [name] but only if it's their birthday```\n")
 	nam = " ".join(nam)
-	if nam.startswith("<@"):
-		try:
-			if nam.startswith("<@!"):
-				user = ctx.message.server.get_member(nam[3:-1])
-			else:
-				user = ctx.message.server.get_member(nam[2:-1])
-		except Exception as e:
-			return await main.say("i couldn't do it, sorry, happy birthday anyway :tada: unless you're a cunt then fuck you suck a dick")
-		nam = user.name + " <@"+user.id+">"
-	return await main.say(":tada::tada::tada::tada::tada: HAPPY BIRTHDAY " + nam.upper() + " :tada::tada::tada::tada::tada:")
+	person = await user_from_at(ctx, nam[0])
+	if not person:
+		return await main.say("i couldn't do it, sorry, happy birthday anyway :tada: unless you're a cunt then fuck you suck a dick")
+	elif person == 69:
+			return 0
+	else:
+		person = person.name + " <@"+person.id+">"
+	return await main.say(":tada::tada::tada::tada::tada: HAPPY BIRTHDAY " + person.upper() + " :tada::tada::tada::tada::tada:")
 @main.command(pass_context=True)
 async def blacklist(ctx, *nig):
 	if not nig:
-		user = ctx.message.author.id
+		person = ctx.message.author
 	else:
-		if nig[0].startswith("<@"):
-				if nig[0].startswith("<@!"):
-					user = nig[0][3:-1]
-				else:
-					user = nig[0][2:-1]
-	return await main.say("<@"+ user +">: :hammer: ***BLACKLISTED*** :hammer: for **24:00:00**")
+		person = await user_from_at(ctx, nig[0])
+		if not person:
+			person = ctx.message.author
+		elif person == 69:
+			return 0
+	return await main.say("<@"+ person.id +">: :hammer: ***BLACKLISTED*** :hammer: for **24:00:00**")
 @main.command()
 async def splatoonrotation(*args):
 	msg1 = await main.say("getting stats for a dead game (Splatoon), give me a moment")
@@ -257,39 +293,26 @@ async def splatoonrotation(*args):
 		await main.say("didn't work :frowning2: \n```" + str(e) + "\n```")
 @main.command(pass_context=True)
 async def suck(ctx, *per):
-	app = await main.application_info()
 	if not per:
 		return await main.say("```\nsuck [@ person]\n```")
-	if per[0].startswith("<@"):
-		if per[0].startswith("<@!"):
-			user = per[0][3:-1]
-		else:
-			user = per[0][2:-1]
-		if user == app.id:
-			return await main.say("um")
-		return await main.say(ctx.message.author.name + " has sucked your dick <@"+user+">")
-	elif "@everyone" in per[0] or "@here" in per[0]:
-		return await main.say("fuck off")
-	else:
+	person = await user_from_at(ctx, per[0], True, False)
+	if not person:
 		return await main.say("you're supposed to @ someone idiot")
+	elif person == 69:
+			return 0
+	return await main.say(ctx.message.author.name + " has sucked your dick <@"+person.id+">")
 # At end of location actually
 @main.command(pass_context=True)
 async def tittyfuck(ctx, *unlucky):
 	app = await main.application_info()
 	if not unlucky:
 		return await main.say("because 9 people wanted this command\n```\ntittyfuck [victim]\n```")
-	if unlucky[0].startswith("<@"):
-		if unlucky[0].startswith("<@!"):
-			user = unlucky[0][3:-1]
-		else:
-			user = unlucky[0][2:-1]
-		if user == app.id:
-			return await main.say("um")
-		return await main.say(ctx.message.author.name + " has fucked your tits <@"+user+">")
-	elif "@everyone" in unlucky[0] or "@here" in unlucky[0]:
-		return await main.say("fuck off")
-	else:
+	person = await user_from_at(ctx, unlucky[0], True, False)
+	if not person:
 		return await main.say("how are you supposed to tittyfuck if you don't @ who you want to fucktitty")
+	elif person == 69:
+			return 0
+	return await main.say(ctx.message.author.name + " has fucked your tits <@"+person.id+">")
 @main.command(pass_context=True)
 async def cat(ctx, *args):
 	msg = await main.say("nya")
@@ -323,55 +346,39 @@ async def boobsize(ctx, *fem):
 	if not fem:
 		return await main.say("sorry```\nboobsize [female]\n```")
 	cup = random.choice(["A", "A", "B", "B", "B", "C", "C", "D"]) + " " + str(random.randint(10,50))
-	if fem[0].startswith("<@"):
-		try:
-			if fem[0].startswith("<@!"):
-				user = ctx.message.server.get_member(fem[0][3:-1])
-			else:
-				user = ctx.message.server.get_member(fem[0][2:-1])
-			if fem[0][2:-1] == app.id:
-				return await main.say("um")
-			person = user.name
-			return await main.say(user.name + "'s boob size is **" + cup + "**")
-		except Exception as e:
-			return await main.say("they don't exist for some reason")
-	elif "@everyone" in fem[0] or "@here" in fem[0]:
-		return await main.say("fuck off")
-	else:
-		person = " ".join(fem)
-	return await main.say(person + "'s boob size is **" + cup + "**")
+	person = await user_from_at(ctx, " ".join(fem))
+	if not person:
+		return await main.say("they don't exist for some reason")
+	elif person == 69:
+			return 0
+	return await main.say(person.name + "'s boob size is **" + cup + "**")
 @main.command(pass_context=True)
 async def nut(ctx, *target):
 	app = await main.application_info()
 	if not target:
 		return await main.say("```\nnut [target]\n```")
-	if target[0].startswith("<@"):
-		try:
-			if target[0].startswith("<@!"):
-				user = ctx.message.server.get_member(target[0][3:-1])
-			else:
-				user = ctx.message.server.get_member(target[0][2:-1])
-			if target[0][2:-1] == app.id:
-				return await main.say("um")
-			person = user.name
-		except Exception as e:
-			return await main.say("they don't exist for some reason")
-	elif "@everyone" in target[0] or "@here" in target[0]:
-		return await main.say("fuck off")
-	else:
-		person = target[0]
-	you = ctx.message.author.name
+	person = await user_from_at(ctx, " ".join(fem))
+	if not person:
+		return await main.say("they don't exist for some reason")
+	elif person == 69:
+			return 0
+	you = ctx.message.author
 	return await main.say(
 	"{0}: AAAAAAA FINNA BUST\n{1}: what why are you yelling what's this\n{0}: AAFDJFKDSHF AHUAHUAHAHUAHAUA **nuts on {1}**\n{1}: ew what is this hot white substance\n{0}: it's, it's-\n{1}: and it's STICKY GROSS EW\n{0}: it's my nut\n{1}: i don't see any nuts\n{0}: sperm\n{1}: what's that\n{0}: it's how babies are made\n{1}: so i'm pregnant? i hate you {0}!\n{0}: no it's supposed to go into the vagina\n{1}: then why did you shoot your sperm on my head ew\n{0}: bc ur hot\n{1}: what\n{0}: yes\n{1}: brb calling police\nand then {1} called police and now {0} is an officially registered sex offender"
-	.format(you, person))
+	.format(str(you), str(person)))
+@main.command()
+async def girl(*args):
+	girls = json.load(open("girls.json"))
+	rg = random.choice(girls)
+	return await main.say(rg)
 
 # Run
 try:
 	#todo put the secret into a config json and load that
 	main.loop.run_until_complete(main.start(secret))
-except KeyboardInterrupt:
-	print("KeyboardInterrupt")
-	main.send_message("I was KeyboardInterrupted :wave: ")
+except Exception as e:
+	print(str(e))
+	#main.send_message("I was KeyboardInterrupted :wave: ")
 	main.loop.run_until_complete(main.logout())
 finally:
     main.loop.close()
