@@ -14,4 +14,9 @@ $mii = $nnas->getMiis($pid);
 if(!$mii) {
 exit('n');
 }
-echo "{$mii->mii->images->image[4]->cached_url}";
+
+foreach(json_decode(json_encode($mii), true)['mii']['images']['image'] as $ass) {
+if($ass['type'] == 'normal_face') {
+	echo $ass['cached_url'];
+	}
+}

@@ -61,7 +61,7 @@ async def user_from_at(ctx, a, all=True, plain=True):
 			return False
 @main.async_event
 async def erickek():
-	hr = int(time.strftime('%H'))
+	hr = int(time.strftime("%H"))
 	if not fuckeric and not (hr in range(1,5) or hr in range(22,24)):
 		return await main.say("it's good, eric is cool with us now\n_at the moment_")
 	else:
@@ -81,6 +81,7 @@ async def ass(*args):
 async def hi(*args):
 	return await main.say("heyyy")
 # at the end of nut, after SystemExit
+@main.command()
 async def ping(*args):
 	now = time.time()
 	msg = await main.say("pingas")
@@ -251,7 +252,7 @@ async def mii(ctx, *n):
 		return await main.say("what how do you have an nnid that's more than 16 characters")
 	msg = await main.send_message(ctx.message.channel, "doing it")
 	try:
-		out = subprocess.Popen(["php", "nnmii.php", n[0]], stdout=subprocess.PIPE).stdout.read()
+		out = subprocess.Popen(["php", "nnmii.php", n[0]], stdout=subprocess.PIPE).stdout.read().decode()
 	except Exception as e:
 		return await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```")
 	if out == 'n':
@@ -357,15 +358,15 @@ async def nut(ctx, *target):
 	app = await main.application_info()
 	if not target:
 		return await main.say("```\nnut [target]\n```")
-	person = await user_from_at(ctx, " ".join(fem))
+	person = await user_from_at(ctx, " ".join(target), False)
 	if not person:
 		return await main.say("they don't exist for some reason")
 	elif person == 69:
 			return 0
-	you = ctx.message.author
+	you = ctx.message.author.name
 	return await main.say(
 	"{0}: AAAAAAA FINNA BUST\n{1}: what why are you yelling what's this\n{0}: AAFDJFKDSHF AHUAHUAHAHUAHAUA **nuts on {1}**\n{1}: ew what is this hot white substance\n{0}: it's, it's-\n{1}: and it's STICKY GROSS EW\n{0}: it's my nut\n{1}: i don't see any nuts\n{0}: sperm\n{1}: what's that\n{0}: it's how babies are made\n{1}: so i'm pregnant? i hate you {0}!\n{0}: no it's supposed to go into the vagina\n{1}: then why did you shoot your sperm on my head ew\n{0}: bc ur hot\n{1}: what\n{0}: yes\n{1}: brb calling police\nand then {1} called police and now {0} is an officially registered sex offender"
-	.format(str(you), str(person)))
+	.format(you, person))
 @main.command()
 async def girl(*args):
 	girls = json.load(open("girls.json"))
