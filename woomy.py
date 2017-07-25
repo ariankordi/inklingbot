@@ -81,11 +81,13 @@ async def ass(*args):
 async def hi(*args):
 	return await main.say("heyyy")
 # at the end of nut, after SystemExit
-@main.command()
-async def ping(*args):
+@main.command(pass_context=True)
+async def ping(ctx, *args):
+	if args:
+		return await main.say("that's not how it works")
 	now = time.time()
 	msg = await main.say("pingas")
-	return await main.edit_message(msg, "`" + (time.time - now) + "` seconds")
+	return await main.edit_message(msg, "it took `" + str(time.time() - now) + "` seconds to (asynchronously) send a message to `" + ctx.message.server.name + "`")
 @main.command()
 async def rijndael(*args):
 	return await main.say(binascii.hexlify(OpenSSL.rand.bytes(150)).decode())
@@ -99,8 +101,8 @@ async def SystemExit(ctx, *args):
 	if ctx.message.author.id != app.owner.id:
 		return await main.say("how about YOU go die() yourself, php faggot <@"+ctx.message.author.id+">")
 	else:
-		return await main.say("bye :wave: ")
-		sys.exit(1)
+		await main.say("bye :wave: ")
+		sys.exit(0)
 @main.command()
 async def ok(*args):
 	return await main.say("don't you fucking ok me cunt")
@@ -140,7 +142,10 @@ async def openverse(ctx, *all):
 @main.command()
 async def invite(*args):
 	app = await main.application_info()
-	return await main.say("invite deez nuts hah goteem\n" + discord.utils.oauth_url(app.id))
+	if not normie:
+		return await main.say("invite deez nuts hah goteem")
+	else:
+		return await main.say(discord.utils.oauth_url(app.id))
 @main.command()
 async def ponder(*q):
 	if not q:
@@ -181,14 +186,14 @@ async def fuckofferic(ctx, *args):
 async def sethfuck(ctx, *a):
 	if not a:
 		with open("seth.json") as cumd:
-			cummies = random.choice(json.load(cumd))
+			person = random.choice(json.load(cumd))
 	else:
 		person = await user_from_at(ctx, " ".join(a), False)
 		if not person:
 			return await main.say("fuck")
 		elif person == 69:
 			return 0
-	return await main.say("```\nseth 10 year old sperm ---) " + u + "\n```")
+	return await main.say("```\nseth 10 year old sperm ---) " + person + "\n```")
 @main.command()
 async def eric(*args):
 	erickek()
@@ -222,13 +227,13 @@ async def sex(ctx, *u):
 		only2genders = "♂"
 	if not u:
 		return await main.say("you are " + only2genders)
-	person = await user_from_at(ctx, u[0])
+	person = await user_from_at(ctx, u[0], False, True)
 	if not person:
 		return await main.say("who")
 	elif person == 69:
 			return 0
 	else:
-		return await main.say(person.name + " is " + only2genders)
+		return await main.say(person + " is " + only2genders)
 @main.command(pass_context=True)
 async def php(ctx, *txt):
 	#return await main.say("it sucks")
@@ -263,9 +268,9 @@ async def birthday(ctx, *nam):
 	if not nam:
 		return await main.say("```\nbirthday [name] but only if it's their birthday```\n")
 	nam = " ".join(nam)
-	person = await user_from_at(ctx, nam[0])
+	person = await user_from_at(ctx, nam, True, False)
 	if not person:
-		return await main.say("i couldn't do it, sorry, happy birthday anyway :tada: unless you're a cunt then fuck you suck a dick")
+		person = nam
 	elif person == 69:
 			return 0
 	else:
@@ -372,6 +377,19 @@ async def girl(*args):
 	girls = json.load(open("girls.json"))
 	rg = random.choice(girls)
 	return await main.say(rg)
+@main.command(pass_context=True)
+async def secure(ctx, *all):
+	if not all:
+		return await main.say("```\nsecure [thing that isn't secure that needs to be secured]\n```")
+	else:
+		str = " ".join(all);
+		if len(str) > 500:
+			return await main.say("2 long asshole")
+		try:
+			out = subprocess.Popen(["php", "secure-text-pyc.php", str], stdout=subprocess.PIPE).stdout.read()
+		except Exception as e:
+			return await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```")
+		return await main.send_file(ctx.message.channel, "secure-py.png")
 
 # Run
 try:
