@@ -13,6 +13,7 @@ import random
 import json
 import urllib.request
 import html
+import platform
 from discord.ext.commands import Bot
 #config?
 settings = json.load(open("settings.json"))
@@ -145,7 +146,7 @@ async def invite(*args):
 	if not normie:
 		return await main.say("invite deez nuts hah goteem")
 	else:
-		return await main.say(discord.utils.oauth_url(app.id))
+		return await main.say("put it on your christmas tree\n" + discord.utils.oauth_url(app.id))
 @main.command()
 async def ponder(*q):
 	if not q:
@@ -160,6 +161,10 @@ async def compiler(*args):
 @main.command()
 async def uname(*args):
 	return await main.say(subprocess.getoutput("uname -a"))
+# at the end of getjob
+@main.command()
+async def os(*args):	
+	return await main.say("```\n" + platform.platform() + "\n```")
 @main.command()
 async def length(*lol):
 	if not lol:
@@ -174,7 +179,8 @@ async def length(*lol):
 		return await main.say(str(thing) + " cm")
 @main.command(pass_context=True)
 async def fuckofferic(ctx, *args):
-	erickek()
+	#return await main.say("Not today.")
+	await erickek()
 	faggot = 151466174683545600
 	await main.say("goodbye eric d faggot :wave: <@"+str(faggot)+">")
 	try:
@@ -196,7 +202,7 @@ async def sethfuck(ctx, *a):
 	return await main.say("```\nseth 10 year old sperm ---) " + person + "\n```")
 @main.command()
 async def eric(*args):
-	erickek()
+	await erickek()
 	with open("eric.json") as mistaked:
 		mistakes = json.load(mistaked)
 	return await main.say(random.choice(mistakes))
@@ -217,7 +223,7 @@ async def japanese(*a):
 @main.command()
 async def arian(*args):
 	app = await main.application_info()
-	return await main.say("that's me <@"+app.owner.id+"> https://ariankordi.net/")
+	return await main.say("that's me <@"+app.owner.id+"> https://ariankordi.net/\nhttps://github.com/ariankordi/inklingbot")
 @main.command(pass_context=True)
 async def sex(ctx, *u):
 	app = await main.application_info()
@@ -342,9 +348,12 @@ async def anime(*args):
 	except:
 		return await main.say("oops didn't work, maybe Reddit is limiting us")
 	images = []
-	for things in all["data"]["children"]:
-		if things["kind"] == "t3":
-			images.append(html.unescape(things["data"]["preview"]["images"][0]["resolutions"][5]["url"]))
+	try:
+		for things in all["data"]["children"]:
+			if things["kind"] == "t3":
+				images.append(html.unescape(things["data"]["preview"]["images"][0]["resolutions"][5]["url"]))
+	except Exception as e:
+		return await main.say("FUCK\n```" + str(e) + "\n```")
 	return await main.edit_message(msg, random.choice(images))
 @main.command(pass_context=True)
 async def boobsize(ctx, *fem):
@@ -390,6 +399,63 @@ async def secure(ctx, *all):
 		except Exception as e:
 			return await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```")
 		return await main.send_file(ctx.message.channel, "secure-py.png")
+@main.command(pass_context=True)
+async def getjob(ctx, *argh):
+	titles = ["CEO", "Manager", "Founder", "Co-Founder", "Director", "Lead Programmer", "Designer", ]
+	types = ["Co, Ltd.", "Inc.", "Ltd.", "LLC", "Industries", "Corporation", ]
+	companies = ["Google", "Microsoft", "Amazon", "Openverse", "Cedar", "PF2MCorp", "Discord", "Ruby on Rails", "Python", "PHP: Hypertext Preprocessor", "Mac OS X", "Red Hat", "Nintendo", "Log into most any Linux system by hitting backspace 28 times", ]
+	lastnames = ["Johnson", "Smith", "Williams", "Brown", "Jones", "Miller", "Davis", "Wilson", "Moore", "Jackson", "Thompson", "Torvalds", "Humphries", ]
+	if argh:
+		p1 = await user_from_at(ctx, " ".join(argh), True, False)
+		if not p1:
+			return await main.say("you have to @ someone, there are lotso f people in this world!!!!")
+		person = p1.name.title() + " " + random.choice(lastnames)
+		personid = p1.id
+	else:
+		person = ctx.message.author.name.title() + " " + random.choice(lastnames)
+		personid = ctx.message.author.id
+	
+	final = "{0}, {1} of {2} {3}".format(person, random.choice(titles), random.choice(companies), random.choice(types))
+	return await main.say("<@"+personid+"> is now " + final)
+#at the end of secure
+@main.command(pass_context=True)
+async def bully(ctx, *victim):
+	if not victim:
+		return await main.say("warning: Bullying is Not OK,. Please do not Bully in Real Life or on Line thank you "+ctx.message.author.name.title()+".```\nbully [victim]\n```")
+	person = await user_from_at(ctx, " ".join(victim), False)
+	return await main.say("todo put \"roasts\" in `roasts.json` and format them with a mentioned user/string ({0})\nhttps://s2.postimg.org/bmyqgly5l/Wii_U_screenshot_TV_01769.jpg\nhttps://s12.postimg.org/4rb9o7nyl/Wii_U_screenshot_TV_01769.jpg\n\noh who am I kidding I'll never get to doing this one\nsorry folks".format(person))
+@main.command(pass_context=True)
+async def fuckseth(ctx, *args):
+	return await main.say("todo along with `bully`")
+	death = """
+Dear Seth,
+
+I legitimately hope you die.
+
+Love, Arian."""
+	return await main.send_message(ctx.message.author, "```\n{}\n```".format(death))
+@main.command(pass_context=True)
+async def phpsponsor(ctx, *arghss):
+	if not arghss:
+		return await main.say("```\nphpsponsor [image url]\n```")
+	else:
+		str = " ".join(arghss)
+		if str.startswith("<@"):
+			if str.startswith("<@!"):
+				uav = ctx.message.server.get_member(str[3:-1]).avatar_url
+			else:
+				uav = ctx.message.server.get_member(str[2:-1]).avatar_url
+			str = uav
+		if len(str) > 250:
+			return await main.say("2 long asshole")
+		try:
+			out = subprocess.Popen(["php", "php-sponsor-pyc.php", str], stdout=subprocess.PIPE).stdout.read()
+			if not out == b'1':
+				return await main.say("either that isn't an image url or it's not at least `500x500`")
+		except Exception as e:
+			return await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```")
+		return await main.send_file(ctx.message.channel, "php-sp-py.png")
+
 
 # Run
 try:
