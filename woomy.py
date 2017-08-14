@@ -19,7 +19,7 @@ from discord.ext.commands import Bot
 settings = json.load(open("settings.json"))
 secret = settings["secret"]; normie = settings["n"]; fuckeric = settings["fe"];
 #/config
-main = Bot(command_prefix="woomy ")
+main = Bot(command_prefix=("woomy ", "\U0001f991 "))
 
 if normie:
 	@main.async_event
@@ -31,7 +31,8 @@ if normie:
 okay the command prefix is `woomy` so type that before everything and it'll work
 `woomy help` will list all commands however none of them are commented so you'll have to try them if you want to know what they do
 if a command requires args then it'll tell you
-that's about it""")
+that's about it
+(also `:squid:` will work in place of `woomy` shhh)""")
 
 # gets a username from either if someone says it plainly or @s someone
 @main.async_event
@@ -455,7 +456,30 @@ async def phpsponsor(ctx, *arghss):
 		except Exception as e:
 			return await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```")
 		return await main.send_file(ctx.message.channel, "php-sp-py.png")
+@main.command()
+async def linux(*stallman):
+	if stallman:
+		linux = " ".join(stallman)
+	else:
+		linux = 'Linux'
+	return await main.say("""
+I'd just like to interject for a moment.  What you're referring to as {0}, is in fact, GNU/{0}, or as I've recently taken to calling it, GNU plus {0}. {0} is not an operating system unto itself, but rather another free component of a fully functioning GNU system made useful by the GNU corelibs, shell utilities and vital system components comprising a full OS as defined by POSIX.
 
+Many computer users run a modified version of the GNU system every day, without realizing it.  Through a peculiar turn of events, the version of GNU which is widely used today is often called "{0}", and many of its users are not aware that it is basically the GNU system, developed by the GNU Project.
+
+There really is a {0}, and these people are using it, but it is just a part of the system they use. {0} is the kernel: the program in the system that allocates the machine's resources to the other programs that you run. The kernel is an essential part of an operating system, but useless by itself; it can only function in the context of a complete operating system.  {0} is normally used in combination with the GNU operating system: the whole system is basically GNU with {0} added, or GNU/{0}. All the so-called "{0}" distributions are really distributions of GNU/{0}.
+	""".format(linux))
+@main.command()
+async def kai(*thirteenyoboys):
+	if thirteenyoboys:
+		boyz = ' '.join(thirteenyoboys)
+	else:
+		boyz = random.choice([
+		'shit', 'suck',
+		'lick', 'puke',
+		'nuke', 'sit',
+		])
+	return await main.say("<@303983560740569089> {0} on my dick".format(boyz))
 
 # Run
 try:
