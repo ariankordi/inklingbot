@@ -65,7 +65,8 @@ async def user_from_at(ctx, a, all=True, plain=True):
 async def erickek():
 	hr = int(time.strftime("%H"))
 	if not fuckeric and not (hr in range(1,5) or hr in range(22,24)):
-		return await main.say("it's good, eric is cool with us now\n_at the moment_")
+		await main.say("it's good, eric is cool with us now\n_at the moment_")
+		return 69
 	else:
 		return None
 
@@ -181,14 +182,15 @@ async def length(*lol):
 @main.command(pass_context=True)
 async def fuckofferic(ctx, *args):
 	#return await main.say("Not today.")
-	await erickek()
-	faggot = 151466174683545600
-	await main.say("goodbye eric d faggot :wave: <@"+str(faggot)+">")
-	try:
-		await main.kick(ctx.message.server.get_member(str(faggot)))
-	except Exception as e:
-		await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```did Eric leave? do I not have permissions? IDK you decide")
-	return 0
+	suckass = await erickek()
+	if not suckass == 69:
+		faggot = 151466174683545600
+		await main.say("goodbye eric d faggot :wave: <@"+str(faggot)+">")
+		try:
+			await main.kick(ctx.message.server.get_member(str(faggot)))
+		except Exception as e:
+			await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```did Eric leave? do I not have permissions? IDK you decide")
+		return 0
 @main.command(pass_context=True)
 async def sethfuck(ctx, *a):
 	if not a:
@@ -203,10 +205,11 @@ async def sethfuck(ctx, *a):
 	return await main.say("```\nseth 10 year old sperm ---) " + person + "\n```")
 @main.command()
 async def eric(*args):
-	await erickek()
-	with open("eric.json") as mistaked:
-		mistakes = json.load(mistaked)
-	return await main.say(random.choice(mistakes))
+	suckass = await erickek()
+	if not suckass == 69:
+		with open("eric.json") as mistaked:
+			mistakes = json.load(mistaked)
+		return await main.say(random.choice(mistakes))
 @main.command()
 async def japanese(*a):
 	katakana = ["ア","イ","ウ","エ","オ","カ","キ","ク","ケ","コ","ガ","ギ","グ","ゲ","ゴ","サ","シ","ス","セ","ソ","ザ","ジ","ズ","ゼ","ゾ","タ","チ","ツ","テ","ト","ダ","ヂ","ヅ","デ","ド","ナ","ニ","ヌ","ネ","ノ","ハ","ヒ","フ","ヘ","ホ","バ","ビ","ブ","ベ","ボ","パ","ピ","プ","ペ","ポ","マ","ミ","ム","メ","モ","ヤ","ユ","ヨ","ラ","リ","ル","レ","ロ","ワ","ヲ","ン"]
@@ -295,12 +298,32 @@ async def blacklist(ctx, *nig):
 			return 0
 	return await main.say("<@"+ person.id +">: :hammer: ***BLACKLISTED*** :hammer: for **24:00:00**")
 @main.command()
-async def splatoonrotation(*args):
+async def splatoon1rotation(*args):
 	msg1 = await main.say("getting stats for a dead game (Splatoon), give me a moment")
 	try:
-		srv = urllib.request.urlopen("https://s3-ap-northeast-1.amazonaws.com/splatoon-data.nintendo.net/stages_info.json")
+		srv = urllib.request.urlopen("https://splatoon.ink/schedule")
 		stages = json.loads(srv.read().decode())
-		message = "Rotation 1: begins {}, ends {}\nTurf War stage 1: {}\nTurf War stage 2: {}\nRotation 2: begins {}, ends {}\nTurf War stage 1: {}\nTurf War stage 2: {}\nRotation 3: begins {}, ends {}\nTurf War stage 1: {}\nTurf War stage 2: {}".format(stages[0]['datetime_term_begin'], stages[0]['datetime_term_end'], stages[0]['stages'][0]['name'], stages[0]['stages'][1]['name'], stages[1]['datetime_term_begin'], stages[1]['datetime_term_end'], stages[1]['stages'][0]['name'], stages[1]['stages'][1]['name'], stages[2]['datetime_term_begin'], stages[2]['datetime_term_end'], stages[2]['stages'][0]['name'], stages[2]['stages'][1]['name'])
+		message = "Current Turf War stages:\n```\n{0}\n{1}\n```\nCurrent {2} stages:\n```\n{3}\n{4}\n```".format(
+stages['schedule'][0]['modes'][0]['maps'][0]['nameEN'], stages['schedule'][0]['modes'][0]['maps'][1]['nameEN'],
+stages['schedule'][0]['modes'][1]['rulesEN'],
+stages['schedule'][0]['modes'][1]['maps'][0]['nameEN'], stages['schedule'][0]['modes'][1]['maps'][1]['nameEN'],
+)
+		await main.edit_message(msg1, message)
+	except Exception as e:
+		await main.say("didn't work :frowning2: \n```" + str(e) + "\n```")
+@main.command()
+async def splatoon2rotation(*args):
+	msg1 = await main.say("hacking nintendo switch :(, please wait")
+	try:
+		srv = urllib.request.urlopen("https://splatoon.ink/schedule2")
+		stages = json.loads(srv.read().decode())
+		message = "Current {0} stages:\n```\n{1}\n{2}\n```\nCurrent {3} stages:\n```\n{4}\n{5}\n```".format(stages['modes']['regular'][0]['rule']['name'],
+		stages['modes']['regular'][0]['maps'][0],
+		stages['modes']['regular'][0]['maps'][1],
+		stages['modes']['gachi'][0]['rule']['name'],
+		stages['modes']['gachi'][0]['maps'][0],
+		stages['modes']['gachi'][0]['maps'][1],
+		)
 		await main.edit_message(msg1, message)
 	except Exception as e:
 		await main.say("didn't work :frowning2: \n```" + str(e) + "\n```")
@@ -480,6 +503,13 @@ async def kai(*thirteenyoboys):
 		'nuke', 'sit',
 		])
 	return await main.say("<@303983560740569089> {0} on my dick".format(boyz))
+@main.command(pass_context=True)
+async def niceperson(ctx, *ericsucks):
+	if ericsucks:
+		person = ' '.join(ericsucks)
+	else:
+		person = ctx.message.author.name
+	return await main.say("{0} shut the fuck up you waste of life".format(person))
 
 # Run
 try:
