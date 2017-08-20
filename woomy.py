@@ -33,6 +33,13 @@ okay the command prefix is `woomy` so type that before everything and it'll work
 if a command requires args then it'll tell you
 that's about it
 (also `:squid:` will work in place of `woomy` shhh)""")
+	main.remove_command('help')
+	@main.command()
+	async def help(*args):
+		return await main.say("""
+```
+how2use, hot, canada, ass, hi, ping, rijndael, speak, SystemExit, ok, pikamasterjesi, nnpasswordhash, openverse, invite, ponder, compiler, uname, os, length, fuckofferic, rant, sethfuck, eric, japanese, arian, sex, php, mii, birthday, blacklist, splatoon1rotation, splatoon2rotation, suck, tittyfuck, cat, location, fuckingyourniece, anime, boobsize, nut, girl, secure, getjob, bully, fuckseth, phpsponsor, linux, kai, respect
+```""")
 
 # gets a username from either if someone says it plainly or @s someone
 @main.async_event
@@ -62,10 +69,11 @@ async def user_from_at(ctx, a, all=True, plain=True):
 		else:
 			return False
 @main.async_event
-async def erickek():
+async def erickek(ctx):
 	hr = int(time.strftime("%H"))
-	if not fuckeric and not (hr in range(1,5) or hr in range(22,24)):
-		await main.say("it's good, eric is cool with us now\n_at the moment_")
+	app = await main.application_info()
+	if not fuckeric and not (hr in range(1,5)) and not ctx.message.author.id == app.owner.id:
+		await main.say("sorry")
 		return 69
 	else:
 		return None
@@ -153,6 +161,16 @@ async def invite(*args):
 async def ponder(*q):
 	if not q:
 		return await main.say("```\nponder [question]\n```")
+	# prevent people from doing bad things :(
+	bad = [
+	'die',
+	'death',
+	'kms',
+	'kill',
+	]
+	for badbad in bad:
+		if badbad in q:
+			return await main.say("no don't please\ni care :sparkling_heart:")
 	if bool(random.getrandbits(1)):
 		return await main.say("yes")
 	else:
@@ -182,7 +200,7 @@ async def length(*lol):
 @main.command(pass_context=True)
 async def fuckofferic(ctx, *args):
 	#return await main.say("Not today.")
-	suckass = await erickek()
+	suckass = await erickek(ctx)
 	if not suckass == 69:
 		faggot = 151466174683545600
 		await main.say("goodbye eric d faggot :wave: <@"+str(faggot)+">")
@@ -191,6 +209,11 @@ async def fuckofferic(ctx, *args):
 		except Exception as e:
 			await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```did Eric leave? do I not have permissions? IDK you decide")
 		return 0
+@main.command()
+async def rant(*args):
+	with open("mostrants.json") as rants:
+		rant = random.choice(json.load(rants))
+	return await main.say(rant)
 @main.command(pass_context=True)
 async def sethfuck(ctx, *a):
 	if not a:
@@ -203,9 +226,9 @@ async def sethfuck(ctx, *a):
 		elif person == 69:
 			return 0
 	return await main.say("```\nseth 10 year old sperm ---) " + person + "\n```")
-@main.command()
-async def eric(*args):
-	suckass = await erickek()
+@main.command(pass_context=True)
+async def eric(ctx, *args):
+	suckass = await erickek(ctx)
 	if not suckass == 69:
 		with open("eric.json") as mistaked:
 			mistakes = json.load(mistaked)
@@ -265,6 +288,8 @@ async def mii(ctx, *n):
 		return await main.say("too short like your dick <@" + ctx.message.author.id + ">")
 	if len(n[0]) > 16:
 		return await main.say("what how do you have an nnid that's more than 16 characters")
+	if n[0].lower() == 'reaidonaldtrump':
+		return await main.say("go fuck yourself tutikaz")
 	msg = await main.send_message(ctx.message.channel, "doing it")
 	try:
 		out = subprocess.Popen(["php", "nnmii.php", n[0]], stdout=subprocess.PIPE).stdout.read().decode()
@@ -385,12 +410,12 @@ async def boobsize(ctx, *fem):
 	if not fem:
 		return await main.say("sorry```\nboobsize [female]\n```")
 	cup = random.choice(["A", "A", "B", "B", "B", "C", "C", "D"]) + " " + str(random.randint(10,50))
-	person = await user_from_at(ctx, " ".join(fem))
+	person = await user_from_at(ctx, " ".join(fem), False)
 	if not person:
 		return await main.say("they don't exist for some reason")
 	elif person == 69:
 			return 0
-	return await main.say(person.name + "'s boob size is **" + cup + "**")
+	return await main.say(person + "'s boob size is **" + cup + "**")
 @main.command(pass_context=True)
 async def nut(ctx, *target):
 	app = await main.application_info()
@@ -447,10 +472,11 @@ async def bully(ctx, *victim):
 	if not victim:
 		return await main.say("warning: Bullying is Not OK,. Please do not Bully in Real Life or on Line thank you "+ctx.message.author.name.title()+".```\nbully [victim]\n```")
 	person = await user_from_at(ctx, " ".join(victim), False)
-	return await main.say("todo put \"roasts\" in `roasts.json` and format them with a mentioned user/string ({0})\nhttps://s2.postimg.org/bmyqgly5l/Wii_U_screenshot_TV_01769.jpg\nhttps://s12.postimg.org/4rb9o7nyl/Wii_U_screenshot_TV_01769.jpg\n\noh who am I kidding I'll never get to doing this one\nsorry folks".format(person))
+	if not person == 69:
+		return await main.say("todo put \"roasts\" in `roasts.json` and format them with a mentioned user/string ({0})\nhttps://s2.postimg.org/bmyqgly5l/Wii_U_screenshot_TV_01769.jpg\nhttps://s12.postimg.org/4rb9o7nyl/Wii_U_screenshot_TV_01769.jpg\n\noh who am I kidding I'll never get to doing this one\nsorry folks".format(person))
 @main.command(pass_context=True)
 async def fuckseth(ctx, *args):
-	return await main.say("todo along with `bully`")
+	return await main.say("todo along with `bully`\ntbh i forgot what this was going to be")
 	death = """
 Dear Seth,
 
@@ -504,12 +530,13 @@ async def kai(*thirteenyoboys):
 		])
 	return await main.say("<@303983560740569089> {0} on my dick".format(boyz))
 @main.command(pass_context=True)
-async def niceperson(ctx, *ericsucks):
+async def respect(ctx, *ericsucks):
 	if ericsucks:
-		person = ' '.join(ericsucks)
+		person = await user_from_at(ctx, ' '.join(ericsucks), False)
 	else:
 		person = ctx.message.author.name
-	return await main.say("{0} shut the fuck up you waste of life".format(person))
+	if not person == 69:
+		return await main.say("{0} shut the fuck up you waste of life".format(person.lower()))
 
 # Run
 try:
