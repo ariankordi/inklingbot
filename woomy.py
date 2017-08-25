@@ -14,6 +14,7 @@ import json
 import urllib.request
 import html
 import platform
+from lxml import html
 from discord.ext.commands import Bot
 #config?
 settings = json.load(open("settings.json"))
@@ -38,7 +39,7 @@ that's about it
 	async def help(*args):
 		return await main.say("""
 ```
-how2use, hot, canada, ass, hi, ping, rijndael, speak, SystemExit, ok, pikamasterjesi, nnpasswordhash, openverse, invite, ponder, compiler, uname, os, length, fuckofferic, rant, sethfuck, eric, japanese, arian, sex, php, mii, birthday, blacklist, splatoon1rotation, splatoon2rotation, suck, tittyfuck, cat, location, fuckingyourniece, anime, boobsize, nut, girl, secure, getjob, bully, fuckseth, phpsponsor, linux, kai, respect
+how2use, hot, canada, ass, hi, ping, rijndael, speak, SystemExit, ok, pikamasterjesi, nnpasswordhash, openverse, invite, ponder, compiler, uname, os, length, fuckofferic, rant, sethfuck, eric, japanese, arian, sex, php, mii, birthday, blacklist, splatoon1rotation, splatoon2rotation, suck, tittyfuck, cat, location, fuckingyourniece, anime, boobsize, nut, girl, secure, getjob, bully, fuckseth, phpsponsor, linux, kai, respect, miiverse
 ```""")
 
 # gets a username from either if someone says it plainly or @s someone
@@ -251,6 +252,9 @@ async def japanese(*a):
 async def arian(*args):
 	app = await main.application_info()
 	return await main.say("that's me <@"+app.owner.id+"> https://ariankordi.net/\nhttps://github.com/ariankordi/inklingbot")
+@main.command()
+async def gender(*args):
+	return await main.say("no, it's `sex`, not \"gender\"")
 @main.command(pass_context=True)
 async def sex(ctx, *u):
 	app = await main.application_info()
@@ -518,8 +522,10 @@ Many computer users run a modified version of the GNU system every day, without 
 
 There really is a {0}, and these people are using it, but it is just a part of the system they use. {0} is the kernel: the program in the system that allocates the machine's resources to the other programs that you run. The kernel is an essential part of an operating system, but useless by itself; it can only function in the context of a complete operating system.  {0} is normally used in combination with the GNU operating system: the whole system is basically GNU with {0} added, or GNU/{0}. All the so-called "{0}" distributions are really distributions of GNU/{0}.
 	""".format(linux))
-@main.command()
-async def kai(*thirteenyoboys):
+@main.command(pass_context=True)
+async def kai(ctx, *thirteenyoboys):
+	if ctx.message.server.id != '298564047991996416':
+		return await main.say("this command is --EXPLICIT-- and can only be used on a very specific server\nsorry, kids")
 	if thirteenyoboys:
 		boyz = ' '.join(thirteenyoboys)
 	else:
@@ -537,6 +543,22 @@ async def respect(ctx, *ericsucks):
 		person = ctx.message.author.name
 	if not person == 69:
 		return await main.say("{0} shut the fuck up you waste of life".format(person.lower()))
+@main.command()
+async def miiverse(*url):
+	if not url:
+		return await main.say("```\nmiiverse [post URL, e.g. AYEBAAAEAAB2UZ8mAzTspw]```")
+	if url[0] == 'AYEBAAAEAAB2UZ8mAzTspw':
+		return await main.say("haha that isn't actually a post")
+	try:
+		srv = urllib.request.urlopen("https://miiverse.nintendo.net/posts/{0}/embed".format(url[0]))
+	except Exception as e:
+		return await main.say("```\n" + str(e) + "```")
+	ftree = html.fromstring(srv.read().decode())
+	drawing = ftree.xpath('//*[@id="post-content"]/div/p/img/@src')
+	post = ftree.xpath('//*[@id="post-content"]/div/p/text()')
+	if drawing:
+		return await main.say("c'est une belle peinture\n\n" + drawing[0])
+	return await main.say(post[0])
 
 # Run
 try:
