@@ -39,7 +39,7 @@ that's about it
 	async def help(*args):
 		return await main.say("""
 ```
-how2use, hot, canada, ass, hi, ping, rijndael, speak, SystemExit, ok, pikamasterjesi, nnpasswordhash, openverse, invite, ponder, compiler, uname, os, length, fuckofferic, rant, sethfuck, eric, japanese, arian, sex, php, mii, birthday, blacklist, splatoon1rotation, splatoon2rotation, suck, tittyfuck, cat, location, fuckingyourniece, anime, boobsize, nut, girl, secure, getjob, bully, fuckseth, phpsponsor, linux, kai, respect, miiverse
+how2use, hot, canada, ass, hi, ping, rijndael, speak, SystemExit, ok, pikamasterjesi, nnpasswordhash, openverse, invite, ponder, compiler, uname, os, lsblk, length, fuckofferic, rant, sethfuck, eric, japanese, arian, sex, php, mii, birthday, blacklist, splatoon1rotation, splatoon2rotation, suck, tittyfuck, cat, location, fuckingyourniece, anime, boobsize, nut, girl, secure, getjob, bully, fuckseth, phpsponsor, linux, kai, respect, miiverse
 ```""")
 
 # gets a username from either if someone says it plainly or @s someone
@@ -186,6 +186,10 @@ async def uname(*args):
 @main.command()
 async def os(*args):	
 	return await main.say("```\n" + platform.platform() + "\n```")
+@main.command()
+async def lsblk(*args):
+	command = subprocess.getoutput("lsblk")
+	return await main.say("```\n" + command + "```")
 @main.command()
 async def length(*lol):
 	if not lol:
@@ -556,9 +560,15 @@ async def miiverse(*url):
 	ftree = html.fromstring(srv.read().decode())
 	drawing = ftree.xpath('//*[@id="post-content"]/div/p/img/@src')
 	post = ftree.xpath('//*[@id="post-content"]/div/p/text()')
+	screenshot = ftree.xpath('//*[@id="post-content"]/div/div[1]/img/@src')
+	thing = ""
 	if drawing:
-		return await main.say("c'est une belle peinture\n\n" + drawing[0])
-	return await main.say(post[0])
+		thing += "c'est une belle peinture\n\n" + drawing[0]
+	else:
+		thing += post[0]
+	if screenshot:
+		thing += "\n" + screenshot[0]
+	return await main.say(thing)
 
 # Run
 try:
