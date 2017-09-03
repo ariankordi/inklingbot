@@ -24,10 +24,10 @@ $draw->setTextEncoding('UTF-8');
 $metrics = $image->queryFontMetrics($draw, $text);
 
 /* Create text */
-$draw->annotation(0, $metrics['ascender'], $text);
+$draw->annotation(0, $metrics['ascender']+25, $text);
 
 /* Create image */
-$image->newImage($metrics['textWidth'], $metrics['textHeight'], $background);
+$image->newImage($metrics['textWidth']+25, $metrics['textHeight'], $background);
 $image->setImageFormat('png');
 $image->drawImage($draw);
 

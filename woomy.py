@@ -14,6 +14,7 @@ import json
 import urllib.request
 import html
 import platform
+import time
 from lxml import html
 from discord.ext.commands import Bot
 #config?
@@ -39,7 +40,7 @@ that's about it
 	async def help(*args):
 		return await main.say("""
 ```
-how2use, hot, canada, ass, hi, ping, rijndael, speak, SystemExit, ok, pikamasterjesi, nnpasswordhash, openverse, invite, ponder, compiler, uname, os, lsblk, length, fuckofferic, rant, sethfuck, eric, japanese, arian, sex, php, mii, birthday, blacklist, splatoon1rotation, splatoon2rotation, suck, tittyfuck, cat, location, fuckingyourniece, anime, boobsize, nut, girl, secure, getjob, bully, fuckseth, phpsponsor, linux, kai, respect, miiverse
+how2use, hot, canada, ass, hi, ping, rijndael, speak, SystemExit, ok, pikamasterjesi, nnpasswordhash, openverse, invite, ponder, compiler, uname, os, lsblk, length, fuckofferic, rant, sethfuck, eric, japanese, arian, sex, php, mii, birthday, blacklist, splatoon1rotation, splatoon2rotation, suck, tittyfuck, cat, location, fuckingyourniece, anime, boobsize, nut, girl, secure, getjob, bully, fuckseth, phpsponsor, linux, kai, loli, respect, miiverse, eb, eek
 ```""")
 
 # gets a username from either if someone says it plainly or @s someone
@@ -88,7 +89,7 @@ async def canada(*args):
 	return await main.say("O CANADA```\n  _\n (_)\n  |_____________________________________\n  |&&&&&&                         &&&&&&|\n  |&&&&&&                         &&&&&&|\n  |&&&&&&                         &&&&&&|\n  |&&&&&&          .\\^/.          &&&&&&|\n  |&&&&&&        . |   | .        &&&&&&|\n  |&&&&&&        |\\|   |/|        &&&&&&|\n  |&&&&&&     .--'       '--.     &&&&&&|\n  |&&&&&&      \\           /      &&&&&&|\n  |&&&&&&       >         <       &&&&&&|\n  |&&&&&&      '~|/~~|~~\\|~'      &&&&&&|\n  |&&&&&&            |            &&&&&&|\n  |&&&&&&                         &&&&&&|\n  |&&&&&&                         &&&&&&|\n  |&&&&&&_________________________&&&&&&|\n  |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n  |\n  |\n  |\n  |\n  |\n  |\n  |\n  |\n```")
 @main.command()
 async def ass(*args):
-	return await main.say("todo put ass here\nhttps://s18.postimg.org/4np6ebpcp/Wii_U_screenshot_TV_01769.jpg\nhttps://s1.postimg.org/p5vtn7xu7/Wii_U_screenshot_TV_01769.jpg")
+	return await main.say("todo put ass here\nhttps://s18.postimg.org/4np6ebpcp/Wii_U_screenshot_TV_01769.jpg\nhttps://s1.postimg.org/p5vtn7xu7/Wii_U_screenshot_TV_01769.jpg\nalso hot squid vag\nhttps://s2.postimg.org/bmyqgly5l/Wii_U_screenshot_TV_01769.jpg\nhttps://s12.postimg.org/4rb9o7nyl/Wii_U_screenshot_TV_01769.jpg")
 @main.command()
 async def hi(*args):
 	return await main.say("heyyy")
@@ -195,7 +196,7 @@ async def length(*lol):
 	if not lol:
 		return await main.say("```\nlength [object]\n```")
 	if lol[0] == 'arian':
-		return await main.say("actually arian is `5'11 ft` tall as of now")
+		return await main.say("actually arian is `6 ft` tall as of now")
 	else:
 		if 'eric' in lol[0]:
 			thing = 0
@@ -207,10 +208,10 @@ async def fuckofferic(ctx, *args):
 	#return await main.say("Not today.")
 	suckass = await erickek(ctx)
 	if not suckass == 69:
-		faggot = 151466174683545600
-		await main.say("goodbye eric d faggot :wave: <@"+str(faggot)+">")
+		faggot = "151466174683545600"
+		await main.say("goodbye eric d faggot :wave: <@"+faggot+">")
 		try:
-			await main.kick(ctx.message.server.get_member(str(faggot)))
+			await main.kick(ctx.message.server.get_member(faggot))
 		except Exception as e:
 			await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```did Eric leave? do I not have permissions? IDK you decide")
 		return 0
@@ -481,17 +482,17 @@ async def bully(ctx, *victim):
 		return await main.say("warning: Bullying is Not OK,. Please do not Bully in Real Life or on Line thank you "+ctx.message.author.name.title()+".```\nbully [victim]\n```")
 	person = await user_from_at(ctx, " ".join(victim), False)
 	if not person == 69:
-		return await main.say("todo put \"roasts\" in `roasts.json` and format them with a mentioned user/string ({0})\nhttps://s2.postimg.org/bmyqgly5l/Wii_U_screenshot_TV_01769.jpg\nhttps://s12.postimg.org/4rb9o7nyl/Wii_U_screenshot_TV_01769.jpg\n\noh who am I kidding I'll never get to doing this one\nsorry folks".format(person))
+		return await main.say("todo put \"roasts\" in `roasts.json` and format them with a mentioned user/string ({0})\n\noh who am I kidding I'll never get to doing this one\nsorry folks".format(person))
 @main.command(pass_context=True)
 async def fuckseth(ctx, *args):
-	return await main.say("todo along with `bully`\ntbh i forgot what this was going to be")
 	death = """
 Dear Seth,
 
 I legitimately hope you die.
 
-Love, Arian."""
-	return await main.send_message(ctx.message.author, "```\n{}\n```".format(death))
+Love, {0}.""".format(ctx.author.name.title())
+	await main.send_message(ctx.message.author, "```\n{}\n```".format(death))
+	return await main.say("it was sent ;) <@286909633187151873>")
 @main.command(pass_context=True)
 async def phpsponsor(ctx, *arghss):
 	if not arghss:
@@ -569,6 +570,72 @@ async def miiverse(*url):
 	if screenshot:
 		thing += "\n" + screenshot[0]
 	return await main.say(thing)
+@main.command(pass_context=True)
+async def eb(ctx, *args):
+	return await main.say("<@"+ctx.message.author.id+"> what's wrong with me?")
+@main.command(pass_context=True)
+async def eek(ctx, *args):
+	# Please do not harass this person or in fact anyone else in here
+	die = "148564483122528265"
+	niggersearch = ctx.message.server.get_member(die)
+	if not niggersearch:
+		return await main.say("the coast is clear :eyes: ")
+	if not ctx.message.server.default_channel.permissions_for(ctx.message.server.me).kick_members:
+		return await main.say("aw man I do not have the necessary (s)perms")
+	await main.say("ban or kick? :thinking: ")
+	time.sleep(1)
+	hh = "got any last words? :gun: "
+	if random.choice([True, True, False]):
+		await main.say("ban it is! goodbye faggot, next time learn how to fucking respect other humans :wave: <@"+die+">")
+		thingy = await main.say(hh + "(5)")
+		time.sleep(1)
+		await main.edit_message(thingy, hh + "(4)")
+		time.sleep(1)
+		await main.edit_message(thingy, hh + "(3)")
+		time.sleep(1)
+		await main.edit_message(thingy, hh + "(2)")
+		time.sleep(1)
+		await main.edit_message(thingy, hh + "(1)")
+		time.sleep(1)
+		await main.edit_message(thingy, hh)
+		try:
+			await main.ban(niggersearch)
+			await main.kick(niggersearch)
+		except Exception as e:
+			await main.say("aw man, never mind\n```\n"+e+"```")
+		await main.say("okay he's gone, now get back to work")
+	else:
+		await main.say("time for a kick! see ya dude, I'll let you off for now, next time learn how to fucking respect other humans :wave: <@"+die+">")
+		thingy = await main.say(hh + "(5)")
+		time.sleep(1)
+		await main.edit_message(thingy, hh + "(4)")
+		time.sleep(1)
+		await main.edit_message(thingy, hh + "(3)")
+		time.sleep(1)
+		await main.edit_message(thingy, hh + "(2)")
+		time.sleep(1)
+		await main.edit_message(thingy, hh + "(1)")
+		time.sleep(1)
+		await main.edit_message(thingy, hh)
+		try:
+			await main.kick(niggersearch)
+		except Exception as e:
+			await main.say("aw man, never mind\n```\n"+e+"```")
+		await main.say("okay he's gone, now get back to work")
+@main.command(pass_context=True)
+async def loli(ctx, *args):
+	if not "nsfw" in ctx.message.channel.name:
+		return await main.say("this isn't an NSFW channel\nor maybe it is and I can't tell because fucking DISCORDPY doesn't have that implemented\n\nyet")
+	mess = await main.say(":thinking: ")
+	try:
+		srv = urllib.request.urlopen("https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&tags=loli%20splatoon")
+		lolis = json.loads(srv.read().decode())
+		imagags = []
+		for thing in lolis:
+			imagags.append("https://" + thing["file_url"][2:])
+	except Exception as e:
+		return await main.say("fuck\n```" + str(e) + "```")
+	return await main.edit_message(mess, random.choice(imagags))
 
 # Run
 try:
