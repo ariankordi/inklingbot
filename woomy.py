@@ -30,17 +30,16 @@ if normie:
 	@main.command()
 	async def how2use(*args):
 		return await main.say("""
-okay the command prefix is `woomy` so type that before everything and it'll work
+the command prefix is `woomy` so use that before everything
 `woomy help` will list all commands however none of them are commented so you'll have to try them if you want to know what they do
 if a command requires args then it'll tell you
-that's about it
 (also `:squid:` will work in place of `woomy` shhh)""")
-	main.remove_command('help')
+	main.remove_command("help")
 	@main.command()
 	async def help(*args):
 		return await main.say("""
 ```
-how2use, hot, canada, ass, hi, ping, rijndael, speak, SystemExit, ok, pikamasterjesi, nnpasswordhash, openverse, invite, ponder, compiler, uname, os, lsblk, length, fuckofferic, rant, sethfuck, eric, japanese, arian, sex, php, mii, birthday, blacklist, splatoon1rotation, splatoon2rotation, suck, tittyfuck, cat, location, fuckingyourniece, anime, boobsize, nut, girl, secure, getjob, bully, fuckseth, phpsponsor, linux, kai, loli, respect, miiverse, eb, eek
+how2use, hot, canada, ass, hi, ping, rijndael, speak, SystemExit, nnpasswordhash, openverse, invite, ponder, python3, uname, os, lsblk, length, fuckofferic, rant, sethfuck, eric, japanese, arian, sex, php, mii, birthday, blacklist, splatoon1rotation, splatoon2rotation, suck, tittyfuck, cat, location, fuckingyourniece, anime, boobsize, nut, girl, secure, getjob, bully, fuckseth, phpsponsor, linux, kai, loli, respect, miiverse, eek
 ```""")
 
 # gets a username from either if someone says it plainly or @s someone
@@ -112,16 +111,12 @@ async def speak(*args):
 async def SystemExit(ctx, *args):
 	app = await main.application_info()
 	if ctx.message.author.id != app.owner.id:
-		return await main.say("how about YOU go die() yourself, php faggot <@"+ctx.message.author.id+">")
+		return await main.say("you're not tbe boss of me :angry: <@"+ctx.message.author.id+">")
 	else:
 		await main.say("bye :wave: ")
+		main.loop.run_until_complete(main.logout())
+		main.loop.close()
 		sys.exit(0)
-@main.command()
-async def ok(*args):
-	return await main.say("don't you fucking ok me cunt")
-@main.command()
-async def pikamasterjesi(*args):
-	return await main.say("<@295395343137505282>\nhttps://yt3.ggpht.com/-jl5w8T6GckA/AAAAAAAAAAI/AAAAAAAAAAA/foES_M_6PQ8/s500-c-k-no-mo-rj-c0xffffff/photo.jpg")
 @main.command()
 async def nnpasswordhash(*a):
 	if not a:
@@ -178,7 +173,7 @@ async def ponder(*q):
 	else:
 		return await main.say("nah")
 @main.command()
-async def compiler(*args):
+async def python3(*args):
 	return await main.say(sys.version)
 @main.command()
 async def uname(*args):
@@ -571,17 +566,16 @@ async def miiverse(*url):
 		thing += "\n" + screenshot[0]
 	return await main.say(thing)
 @main.command(pass_context=True)
-async def eb(ctx, *args):
-	return await main.say("<@"+ctx.message.author.id+"> what's wrong with me?")
-@main.command(pass_context=True)
 async def eek(ctx, *args):
+	if not ctx.message.server.id == "298564047991996416":
+		return await main.say("this command is only meant to be used in one server :frowning2: ")
 	# Please do not harass this person or in fact anyone else in here
 	die = "148564483122528265"
+	if not ctx.message.server.default_channel.permissions_for(ctx.message.server.me).kick_members:
+		return await main.say("aw man I do not have the necessary (s)perms")
 	niggersearch = ctx.message.server.get_member(die)
 	if not niggersearch:
 		return await main.say("the coast is clear :eyes: ")
-	if not ctx.message.server.default_channel.permissions_for(ctx.message.server.me).kick_members:
-		return await main.say("aw man I do not have the necessary (s)perms")
 	await main.say("ban or kick? :thinking: ")
 	time.sleep(1)
 	hh = "got any last words? :gun: "
@@ -624,11 +618,12 @@ async def eek(ctx, *args):
 		await main.say("okay he's gone, now get back to work")
 @main.command(pass_context=True)
 async def loli(ctx, *args):
-	if not "nsfw" in ctx.message.channel.name:
+	if not "nsfw" in ctx.message.channel.name and not ctx.message.server.id == "298564047991996416":
 		return await main.say("this isn't an NSFW channel\nor maybe it is and I can't tell because fucking DISCORDPY doesn't have that implemented\n\nyet")
 	mess = await main.say(":thinking: ")
 	try:
-		srv = urllib.request.urlopen("https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&tags=loli%20splatoon")
+		pag = random.choice([0, 1, 2, ])
+		srv = urllib.request.urlopen("https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&pid="+ str(pag) + "&tags=loli%20splatoon")
 		lolis = json.loads(srv.read().decode())
 		imagags = []
 		for thing in lolis:
@@ -647,4 +642,4 @@ except Exception as e:
 	main.loop.run_until_complete(main.logout())
 finally:
     main.loop.close()
-    exit()
+    sys.exit(0)
