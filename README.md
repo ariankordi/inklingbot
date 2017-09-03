@@ -14,8 +14,8 @@ https://discordapp.com/oauth2/authorize?client_id=337366623851905035&scope=bot
 # Warning
 If you actually run this on your actual machine that you actually care about,
 
-	* SystemExit will exit the script (if you are the owner)
-	* compiler will expose your Python version
-	* uname will expose the output of `uname -a`
-	* os will expose your OS version
-	* lsblk **will expose your hard disks by running `lsblk`** (via shell)
+  * SystemExit will exit the script (if you are the owner)
+  * compiler will expose your Python version
+  * uname will expose the output of `uname -a`
+  * os will expose your OS version
+  * lsblk **will expose your hard disks by running `lsblk`** (via shell)
