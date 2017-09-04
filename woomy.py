@@ -111,7 +111,7 @@ async def speak(*args):
 async def SystemExit(ctx, *args):
 	app = await main.application_info()
 	if ctx.message.author.id != app.owner.id:
-		return await main.say("you're not tbe boss of me :angry: <@"+ctx.message.author.id+">")
+		return await main.say("you're not the boss of me :angry: <@"+ctx.message.author.id+">")
 	else:
 		await main.say("bye :wave: ")
 		main.loop.run_until_complete(main.logout())
@@ -479,15 +479,16 @@ async def bully(ctx, *victim):
 	if not person == 69:
 		return await main.say("todo put \"roasts\" in `roasts.json` and format them with a mentioned user/string ({0})\n\noh who am I kidding I'll never get to doing this one\nsorry folks".format(person))
 @main.command(pass_context=True)
-async def fuckseth(ctx, *args):
+async def fuckseth(ctx, *ann):
+	recipient = ctx.message.server.get_member("150424590043185152")
 	death = """
 Dear Seth,
 
 I legitimately hope you die.
 
-Love, {0}.""".format(ctx.author.name.title())
-	await main.send_message(ctx.message.author, "```\n{}\n```".format(death))
-	return await main.say("it was sent ;) <@286909633187151873>")
+Love, {0}.""".format(ctx.message.author.name.title())
+	await main.send_message(recipient, "```\n{}\n```".format(death))
+	return await main.say("it was sent ;) <@"+ recipient.id +">")
 @main.command(pass_context=True)
 async def phpsponsor(ctx, *arghss):
 	if not arghss:
@@ -618,7 +619,7 @@ async def eek(ctx, *args):
 		await main.say("okay he's gone, now get back to work")
 @main.command(pass_context=True)
 async def loli(ctx, *args):
-	if not "nsfw" in ctx.message.channel.name and not ctx.message.server.id == "298564047991996416":
+	if not ("nsfw" in ctx.message.channel.name or "loli" in ctx.message.channel.name) and not ctx.message.server.id == "298564047991996416":
 		return await main.say("this isn't an NSFW channel\nor maybe it is and I can't tell because fucking DISCORDPY doesn't have that implemented\n\nyet")
 	mess = await main.say(":thinking: ")
 	try:
@@ -631,6 +632,21 @@ async def loli(ctx, *args):
 	except Exception as e:
 		return await main.say("fuck\n```" + str(e) + "```")
 	return await main.edit_message(mess, random.choice(imagags))
+@main.command(pass_context=True)
+async def hitler(ctx, *arghss):
+	str = " ".join(arghss)
+	if str.startswith("<@"):
+		if str.startswith("<@!"):
+			uav = ctx.message.server.get_member(str[3:-1]).avatar_url
+		else:
+			uav = ctx.message.server.get_member(str[2:-1]).avatar_url
+	else:
+		uav = ctx.message.author.avatar_url
+	try:
+		out = subprocess.Popen(["php", "hitler.php", uav], stdout=subprocess.PIPE).stdout.read()
+	except Exception as e:
+		return await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```")
+	return await main.send_file(ctx.message.channel, "hitler-py.png")
 
 # Run
 try:
