@@ -11,22 +11,23 @@ import subprocess
 import sys
 import random
 import json
-import urllib.request
+import urllib.request, urllib.parse
 import html
 import platform
 import time
+import requests
 from lxml import html
 from discord.ext.commands import Bot
 #config?
 settings = json.load(open("settings.json"))
 secret = settings["secret"]; normie = settings["n"]; fuckeric = settings["fe"];
 #/config
-main = Bot(command_prefix=("woomy ", "\U0001f991 "))
+main = Bot(command_prefix=("woomy ", "Woomy ", "WOOMY ", "\U0001f991 "))
 
 if normie:
 	@main.async_event
 	async def on_ready():
-		return await main.change_presence(game=discord.Game(name="'woomy how2use' for help"))
+		return await main.change_presence(game=discord.Game(name="'woomy how2use', or for music: ';;woomy help'"))
 	@main.command()
 	async def how2use(*args):
 		return await main.say("""
@@ -39,8 +40,15 @@ if a command requires args then it'll tell you
 	async def help(*args):
 		return await main.say("""
 ```
-how2use, hot, canada, ass, hi, ping, rijndael, speak, SystemExit, nnpasswordhash, openverse, invite, ponder, python3, uname, os, lsblk, length, fuckofferic, rant, sethfuck, eric, japanese, arian, sex, php, mii, birthday, blacklist, splatoon1rotation, splatoon2rotation, suck, tittyfuck, cat, location, fuckingyourniece, anime, boobsize, nut, girl, secure, getjob, bully, fuckseth, phpsponsor, linux, kai, loli, respect, miiverse, eek
-```""")
+"Util":
+ping, rijndael, speak, SystemExit, nnpasswordhash, python3, uname, os, lsblk, invite, ponder, mii, splatoon1rotation, splatoon2rotation, location, miiverse
+SFW:
+hot, canada, hi, openverse, length, japanese, arian, sex, php, birthday, blacklist, cat, anime, girl, secure, getjob, bully, linux, phpsponsor, hitler
+Not so SFW:
+ass, fuckofferic, rant, sethfuck, eric, suck, tittyfuck, boobsize, nut, fuckseth, kai, respect, eek, loli, 69, succme, neko
+```
+**Side-note**: `openverse, arian, sex, fuckofferic, rant, sethfuck, eric, fuckseth, kai, eek` and `respect` are only meant to be used in one guild, or rather they're only meant for one, you sure can run them if you want, but they probably won't be nice.
+""")
 
 # gets a username from either if someone says it plainly or @s someone
 @main.async_event
@@ -140,8 +148,9 @@ async def openverse(ctx, *all):
 		return await main.say("```\nopenverse [text]\n```")
 	else:
 		str = " ".join(all);
-		if len(str) > 50:
+		if len(str) > 250:
 			return await main.say("2 long asshole")
+		await main.send_typing(ctx.message.channel)
 		try:
 			out = subprocess.Popen(["php", "open-logo-pyc.php", str], stdout=subprocess.PIPE).stdout.read()
 		except Exception as e:
@@ -277,8 +286,9 @@ async def php(ctx, *txt):
 	if not txt:
 		return await main.say("```\nphp [text]\n```")
 	tex = " ".join(txt)
-	if len(tex) > 50:
+	if len(tex) > 250:
 		return await main.say("2 long asshole")
+	await main.send_typing(ctx.message.channel)
 	try:
 		out = subprocess.Popen(["php", "php-logo-pyc.php", tex], stdout=subprocess.PIPE).stdout.read()
 	except Exception as e:
@@ -326,8 +336,8 @@ async def blacklist(ctx, *nig):
 		elif person == 69:
 			return 0
 	return await main.say("<@"+ person.id +">: :hammer: ***BLACKLISTED*** :hammer: for **24:00:00**")
-@main.command()
-async def splatoon1rotation(*args):
+@main.command(pass_context=True)
+async def splatoon1rotation(ctx, *args):
 	msg1 = await main.say("getting stats for a dead game (Splatoon), give me a moment")
 	try:
 		srv = urllib.request.urlopen("https://splatoon.ink/schedule")
@@ -340,8 +350,8 @@ stages['schedule'][0]['modes'][1]['maps'][0]['nameEN'], stages['schedule'][0]['m
 		await main.edit_message(msg1, message)
 	except Exception as e:
 		await main.say("didn't work :frowning2: \n```" + str(e) + "\n```")
-@main.command()
-async def splatoon2rotation(*args):
+@main.command(pass_context=True)
+async def splatoon2rotation(ctx, *args):
 	msg1 = await main.say("hacking nintendo switch :(, please wait")
 	try:
 		srv = urllib.request.urlopen("https://splatoon.ink/schedule2")
@@ -382,17 +392,15 @@ async def tittyfuck(ctx, *unlucky):
 async def cat(ctx, *args):
 	msg = await main.say("nya")
 	try:
-		img = urllib.request.urlopen("http://thecatapi.com/api/images/get?&format=src&type=png").geturl()
-	except:
-		return await main.say("aw man")
+		srv = urllib.request.urlopen("http://random.cat/meow").read().decode()
+		img = json.loads(srv)["file"]
+	except Exception as e:
+		return await main.say("aw man\n```"+ str(e) +"```")
 	return await main.edit_message(msg, "nya\n" + img)
 @main.command()
 async def location(*args):
 	loc = urllib.request.urlopen("https://ipinfo.io/region").read().decode()[:-1]
 	return await main.say("I am in " + loc + " right now.")
-@main.command()
-async def fuckingyourniece(*args):
-	return await main.say("is totally okay, woomy approved :thumbsup: ")
 @main.command()
 async def anime(*args):
 	msg = await main.say("loading anime wallpapers from /r/animewallpapers x333")
@@ -404,7 +412,7 @@ async def anime(*args):
 	try:
 		for things in all["data"]["children"]:
 			if things["kind"] == "t3":
-				images.append(html.unescape(things["data"]["preview"]["images"][0]["resolutions"][5]["url"]))
+				images.append(things["data"]["preview"]["images"][0]["source"]["url"].replace('&amp;', '&'))
 	except Exception as e:
 		return await main.say("FUCK\n```" + str(e) + "\n```")
 	return await main.edit_message(msg, random.choice(images))
@@ -447,6 +455,7 @@ async def secure(ctx, *all):
 		str = " ".join(all);
 		if len(str) > 500:
 			return await main.say("2 long asshole")
+		await main.send_typing(ctx.message.channel)
 		try:
 			out = subprocess.Popen(["php", "secure-text-pyc.php", str], stdout=subprocess.PIPE).stdout.read()
 		except Exception as e:
@@ -480,14 +489,17 @@ async def bully(ctx, *victim):
 		return await main.say("todo put \"roasts\" in `roasts.json` and format them with a mentioned user/string ({0})\n\noh who am I kidding I'll never get to doing this one\nsorry folks".format(person))
 @main.command(pass_context=True)
 async def fuckseth(ctx, *ann):
-	recipient = ctx.message.server.get_member("150424590043185152")
+	recipient = ctx.message.server.get_member("286909633187151873")
 	death = """
 Dear Seth,
 
 I legitimately hope you die.
 
 Love, {0}.""".format(ctx.message.author.name.title())
-	await main.send_message(recipient, "```\n{}\n```".format(death))
+	try:
+		await main.send_message(recipient, "```\n{}\n```".format(death))
+	except Exception as e:
+		return await main.say("uh-oh \n```" + e + "```")
 	return await main.say("it was sent ;) <@"+ recipient.id +">")
 @main.command(pass_context=True)
 async def phpsponsor(ctx, *arghss):
@@ -503,6 +515,7 @@ async def phpsponsor(ctx, *arghss):
 			str = uav
 		if len(str) > 250:
 			return await main.say("2 long asshole")
+		await main.send_typing(ctx.message.channel)
 		try:
 			out = subprocess.Popen(["php", "php-sponsor-pyc.php", str], stdout=subprocess.PIPE).stdout.read()
 			if not out == b'1':
@@ -544,12 +557,13 @@ async def respect(ctx, *ericsucks):
 		person = ctx.message.author.name
 	if not person == 69:
 		return await main.say("{0} shut the fuck up you waste of life".format(person.lower()))
-@main.command()
-async def miiverse(*url):
+@main.command(pass_context=True)
+async def miiverse(ctx, *url):
 	if not url:
 		return await main.say("```\nmiiverse [post URL, e.g. AYEBAAAEAAB2UZ8mAzTspw]```")
 	if url[0] == 'AYEBAAAEAAB2UZ8mAzTspw':
 		return await main.say("haha that isn't actually a post")
+	await main.send_typing(ctx.message.channel)
 	try:
 		srv = urllib.request.urlopen("https://miiverse.nintendo.net/posts/{0}/embed".format(url[0]))
 	except Exception as e:
@@ -578,6 +592,7 @@ async def eek(ctx, *args):
 	if not niggersearch:
 		return await main.say("the coast is clear :eyes: ")
 	await main.say("ban or kick? :thinking: ")
+	await main.send_typing(ctx.message.channel)
 	time.sleep(1)
 	hh = "got any last words? :gun: "
 	if random.choice([True, True, False]):
@@ -618,20 +633,37 @@ async def eek(ctx, *args):
 			await main.say("aw man, never mind\n```\n"+e+"```")
 		await main.say("okay he's gone, now get back to work")
 @main.command(pass_context=True)
-async def loli(ctx, *args):
+async def loli(ctx, *ericdick):
 	if not ("nsfw" in ctx.message.channel.name or "loli" in ctx.message.channel.name) and not ctx.message.server.id == "298564047991996416":
 		return await main.say("this isn't an NSFW channel\nor maybe it is and I can't tell because fucking DISCORDPY doesn't have that implemented\n\nyet")
 	mess = await main.say(":thinking: ")
 	try:
 		pag = random.choice([0, 1, 2, ])
-		srv = urllib.request.urlopen("https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&pid="+ str(pag) + "&tags=loli%20splatoon")
+		
+		arg = "splatoon"
+		if ericdick:
+			pag = 0
+			arg += " " + urllib.parse.quote_plus(" ".join(ericdick))
+		srv = urllib.request.urlopen("https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&pid="+ str(pag) + "&tags=" + arg)
 		lolis = json.loads(srv.read().decode())
 		imagags = []
 		for thing in lolis:
-			imagags.append("https://" + thing["file_url"][2:])
+			imagags.append([thing["file_url"], thing["score"]])
+	except ValueError:
+		return await main.say("nothing found")
 	except Exception as e:
 		return await main.say("fuck\n```" + str(e) + "```")
-	return await main.edit_message(mess, random.choice(imagags))
+	scramble = random.choice(imagags)
+	rate = str(scramble[1])
+	if not scramble[1]:
+		rate += " ewww"
+	elif scramble[1] >= 100:
+		rate += " holy shit"
+	elif scramble[1] >= 50:
+		rate += " yes"
+	elif scramble[1] >= 30:
+		rate += " :ok_hand: "
+	return await main.edit_message(mess, "score: {0}\n".format(rate) + scramble[0])
 @main.command(pass_context=True)
 async def hitler(ctx, *arghss):
 	str = " ".join(arghss)
@@ -642,19 +674,66 @@ async def hitler(ctx, *arghss):
 			uav = ctx.message.server.get_member(str[2:-1]).avatar_url
 	else:
 		uav = ctx.message.author.avatar_url
+	await main.send_typing(ctx.message.channel)
 	try:
 		out = subprocess.Popen(["php", "hitler.php", uav], stdout=subprocess.PIPE).stdout.read()
 	except Exception as e:
 		return await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```")
 	return await main.send_file(ctx.message.channel, "hitler-py.png")
+@main.command(pass_context=True, aliases=["69"])
+async def sixty_nine(ctx, *arghss):
+	if not ("nsfw" in ctx.message.channel.name or "loli" in ctx.message.channel.name):
+		return await main.say("this isn't an NSFW channel, and while this command isn't directly explicit, the theme is explicit\nsorry kids")
+	str = " ".join(arghss)
+	if str.startswith("<@"):
+		if str.startswith("<@!"):
+			uav = ctx.message.server.get_member(str[3:-1]).avatar_url
+		else:
+			uav = ctx.message.server.get_member(str[2:-1]).avatar_url
+	else:
+		uav = ctx.message.author.avatar_url
+	await main.send_typing(ctx.message.channel)
+	try:
+		out = subprocess.Popen(["php", "69.php", uav], stdout=subprocess.PIPE).stdout.read()
+	except Exception as e:
+		return await main.say("i couldn't do it :thinking: ```\n" + str(e) + "\n```")
+	return await main.send_file(ctx.message.channel, "69-py.png")
+@main.command()
+async def succme(*args):
+	rando = random.choice(range(1, 10))
+	#vrando = random.choice(range(1, 50))
+	#if vrando == 35:
+	#	return await main.say("WARNING: <@"+  +"> has been newly placed on to the _[] Sex Offender Directory_")
+	if not rando == 7:
+		return await main.say("no")
+	if bool(random.getrandbits(1)):
+		return await main.say("""
+\*succ\*
+wait a sec what am i sucking
+\*pulls off blindfold\*
+EW WHAT THAT IS NOT A PENIS THAT IS VAG
+\*pukes\*
+\***on _vag_**\*
+\*runs\*
+""")
+	return await main.say("""
+todo put hot scene here :wink: 
+""")
+@main.command(pass_context=True)
+async def neko(ctx, *args):
+	await main.send_typing(ctx.message.channel)
+	try:
+		srv = requests.get("https://nekos.life/api/lewd/neko")
+	except Exception as e:
+		return await main.say("aw\n```" + str(e) + "```")
+	nya = json.loads(srv.text)['neko']
+	return await main.say(nya)
 
 # Run
 try:
-	#todo put the secret into a config json and load that
 	main.loop.run_until_complete(main.start(secret))
 except Exception as e:
 	print(str(e))
-	#main.send_message("I was KeyboardInterrupted :wave: ")
 	main.loop.run_until_complete(main.logout())
 finally:
     main.loop.close()
