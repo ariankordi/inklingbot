@@ -1,5 +1,5 @@
 # inklingbot
-https://discordapp.com/oauth2/authorize?client_id=337366623851905035&scope=bot
+Do you even care?
 
 # Usage
 
